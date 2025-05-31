@@ -1,13 +1,12 @@
 import io
 import os
 from pathlib import Path
-import pikepdf
+#import pikepdf
 from pyhanko.sign import signers, timestamps, fields
 from pyhanko.sign.general import load_cert_from_pemder
 from pyhanko.sign.fields import SigFieldSpec, append_signature_field
 from pyhanko.sign.signers import PdfSigner, PdfSignatureMetadata
 from pyhanko.pdf_utils.incremental_writer import IncrementalPdfFileWriter
-from pyhanko.stamp import layout
 from pyhanko import stamp
 from pyhanko.pdf_utils.font import opentype
 from pyhanko.pdf_utils import text, images
@@ -67,7 +66,7 @@ tsa_client = timestamps.HTTPTimeStamper("http://timestamp.sectigo.com/qualified"
 pdf_signer = PdfSigner(
     signature_meta=signature_meta,
     signer=signer,
-    #timestamper=tsa_client,
+    timestamper=tsa_client,
     stamp_style=stamp_style,
 )
 
