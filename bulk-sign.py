@@ -2,6 +2,7 @@ import configparser
 import logging
 import os
 from pathlib import Path
+import time
 from typing import Optional, Tuple
 
 from pyhanko import stamp
@@ -44,17 +45,20 @@ class BulkSigner:
         config = configparser.ConfigParser()
         config.read(config_path)
 
-        credentials_file = p12_file or config["credentials"].get("p12_file")
-        credentials_password = p12_password or config["credentials"].get("p12_password")
+        p12_file = p12_file or config["credentials"].get("p12_file")
+        p12_password = p12_password or config["credentials"].get("p12_password")
 
-        if not credentials_file:
+        self.input_dir_unsigned = Path(config["io"].get("input_dir_unsigned"))
+        self.output_dir_signed = Path(config["io"].get("output_dir_signed"))
+
+        if not p12_file:
             raise ValueError("Credentials file is required")
 
-        if not os.path.exists(credentials_file):
-            raise FileNotFoundError(f"Credentials file not found: {credentials_file}")
+        if not os.path.exists(p12_file):
+            raise FileNotFoundError(f"P12 file not found: {p12_file}")
 
-        if not isinstance(credentials_password, str):
-            raise ValueError("Credentials password must be a string")
+        if not isinstance(p12_password, str):
+            raise ValueError("P12 file password must be a string")
 
         image_path = config["stamp"]["image_path"]
         bbox_x_min = config["stamp"]["bbox_x_min"]
@@ -85,8 +89,8 @@ class BulkSigner:
         )
 
         signer = signers.SimpleSigner.load_pkcs12(
-            pfx_file=credentials_file,
-            passphrase=credentials_password.encode(),
+            pfx_file=p12_file,
+            passphrase=p12_password.encode(),
             prefer_pss=False,
         )
         if signer is None:
@@ -110,6 +114,8 @@ class BulkSigner:
             stamp_style=stamp_style,
         )
 
+        self.use_lta = use_lta
+
     def sign_one(self, input_pdf_path: str, output_pdf_path: str):
         logger.info(f"Signing {input_pdf_path} -> {output_pdf_path}")
         Path(output_pdf_path).parent.mkdir(parents=True, exist_ok=True)
@@ -126,10 +132,18 @@ class BulkSigner:
             with open(output_pdf_path, "wb") as final_output:
                 self.pdf_signer.sign_pdf(w, output=final_output)
 
+    def sign_all(self):
+        for input_pdf_path in Path(self.input_dir_unsigned).rglob("*.pdf"):
+            output_relative_path = input_pdf_path.relative_to(self.input_dir_unsigned)
+            output_pdf_path = Path(self.output_dir_signed) / output_relative_path
+            if os.path.exists(output_pdf_path):
+                logger.info(f"Skipping {input_pdf_path} -> {output_pdf_path} (already signed)")
+                continue
+            self.sign_one(input_pdf_path, output_pdf_path)
+            if self.use_lta:
+                logger.info(f"Sleeping for 15 seconds to avoid rate limiting")
+                time.sleep(15)
 
 if __name__ == "__main__":
-    bs = BulkSigner()
-    bs.sign_one(
-        input_pdf_path="unsigned/test.pdf",
-        output_pdf_path="signed/test-signed.pdf",
-    )
+    bs = BulkSigner(use_lta=False)
+    bs.sign_all()
