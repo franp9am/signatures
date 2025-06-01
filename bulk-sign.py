@@ -30,6 +30,7 @@ console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 
 
+
 class BulkSigner:
     def __init__(
         self,
@@ -42,14 +43,15 @@ class BulkSigner:
         cert_root: str = "certs/postsignum_qca4_root.pem",
         cert_intermediate: str = "certs/postsignum_qca4_sub.pem",
     ):
+        project_root = Path(__file__).resolve().parent
         config = configparser.ConfigParser()
-        config.read(config_path)
+        config.read(project_root / config_path)
 
         p12_file = p12_file or config["credentials"].get("p12_file")
         p12_password = p12_password or config["credentials"].get("p12_password")
 
-        self.input_dir_unsigned = Path(config["io"].get("input_dir_unsigned"))
-        self.output_dir_signed = Path(config["io"].get("output_dir_signed"))
+        self.input_dir_unsigned = project_root / config["io"]["input_dir_unsigned"]
+        self.output_dir_signed = project_root / config["io"]["output_dir_signed"]
 
         if not p12_file:
             raise ValueError("Credentials file is required")
