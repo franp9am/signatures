@@ -9,16 +9,13 @@ from typing import Optional
 from pyhanko import stamp
 from pyhanko.pdf_utils import images
 from pyhanko.pdf_utils.incremental_writer import IncrementalPdfFileWriter
-from pyhanko.sign import (PdfSignatureMetadata, PdfSigner, fields, signers,
-                          timestamps)
+from pyhanko.sign import PdfSignatureMetadata, PdfSigner, fields, signers, timestamps
 from pyhanko.sign.fields import SigFieldSpec
 from pyhanko.sign.general import load_cert_from_pemder
 from pyhanko_certvalidator import ValidationContext
 
 logger = logging.getLogger(__name__)
-logger.setLevel(
-    logging.DEBUG
-)  # Set the minimum logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+logger.setLevel(logging.INFO)
 
 console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)
