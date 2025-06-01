@@ -5,3 +5,6 @@ dependencies = [
     "pyHanko[pkcs11,image-support,opentype,qr,stamp]"
 ]
 
+[tool.setuptools]
+py-modules = []
+packages = []
