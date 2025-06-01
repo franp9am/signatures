@@ -1,17 +1,18 @@
+import argparse
 import configparser
 import logging
 import os
-from pathlib import Path
 import time
-from typing import Optional, Tuple
+from pathlib import Path
+from typing import Optional
 
 from pyhanko import stamp
-from pyhanko.sign.general import load_cert_from_pemder
 from pyhanko.pdf_utils import images
 from pyhanko.pdf_utils.incremental_writer import IncrementalPdfFileWriter
 from pyhanko.sign import (PdfSignatureMetadata, PdfSigner, fields, signers,
                           timestamps)
 from pyhanko.sign.fields import SigFieldSpec
+from pyhanko.sign.general import load_cert_from_pemder
 from pyhanko_certvalidator import ValidationContext
 
 logger = logging.getLogger(__name__)
@@ -28,7 +29,6 @@ formatter = logging.Formatter(
 )
 console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
-
 
 
 class BulkSigner:
@@ -53,14 +53,21 @@ class BulkSigner:
         self.input_dir_unsigned = project_root / config["io"]["input_dir_unsigned"]
         self.output_dir_signed = project_root / config["io"]["output_dir_signed"]
 
-        if not p12_file:
+        if not p12_file or not isinstance(p12_file, str) or not p12_file.strip():
             raise ValueError("Credentials file is required")
 
         if not os.path.exists(p12_file):
             raise FileNotFoundError(f"P12 file not found: {p12_file}")
 
-        if not isinstance(p12_password, str):
-            raise ValueError("P12 file password must be a string")
+        if (
+            not p12_password
+            or not isinstance(p12_password, str)
+            or not p12_password.strip()
+        ):
+            raise ValueError("P12 file password must be a nonempty string")
+
+        p12_file = p12_file.strip()
+        p12_password = p12_password.strip()
 
         image_path = config["stamp"]["image_path"]
         bbox_x_min = config["stamp"]["bbox_x_min"]
@@ -69,7 +76,6 @@ class BulkSigner:
         bbox_y_max = config["stamp"]["bbox_y_max"]
         self.bbox = tuple(map(int, (bbox_x_min, bbox_y_min, bbox_x_max, bbox_y_max)))
 
-        
         tsa_root_cert = load_cert_from_pemder(tsa_root_cert_path)
         tsa_intermediate_cert = load_cert_from_pemder(tsa_intermediate_cert_path)
         my_root_cert = load_cert_from_pemder(cert_root)
@@ -139,13 +145,54 @@ class BulkSigner:
             output_relative_path = input_pdf_path.relative_to(self.input_dir_unsigned)
             output_pdf_path = Path(self.output_dir_signed) / output_relative_path
             if os.path.exists(output_pdf_path):
-                logger.info(f"Skipping {input_pdf_path} -> {output_pdf_path} (already signed)")
+                logger.info(
+                    f"Skipping {input_pdf_path} -> {output_pdf_path} (already signed)"
+                )
                 continue
             self.sign_one(input_pdf_path, output_pdf_path)
             if self.use_lta:
-                logger.info(f"Sleeping for 15 seconds to avoid rate limiting")
+                logger.info("Sleeping for 15 seconds to avoid rate limiting")
                 time.sleep(15)
 
-if __name__ == "__main__":
-    bs = BulkSigner(use_lta=False)
+
+def main():
+    parser = argparse.ArgumentParser(description="Bulk sign PDF files")
+    parser.add_argument(
+        "--p12-file",
+        "-p",
+        type=str,
+        help="Path to P12 file with credentials",
+        default=None,
+    )
+    parser.add_argument(
+        "--p12-password", "-pp", type=str, help="Password for P12 file", default=None
+    )
+    parser.add_argument(
+        "--use-lta",
+        "-l",
+        action="store_true",
+        help="Use LTA for timestamping",
+        default=False,
+    )
+    parser.add_argument(
+        "--config",
+        "-c",
+        type=str,
+        help="Path to config file (default: config.ini)",
+        default="config.ini",
+    )
+
+    args = parser.parse_args()
+
+    bs = BulkSigner(
+        config_path=args.config,
+        p12_file=args.p12_file,
+        p12_password=args.p12_password,
+        use_lta=args.use_lta,
+    )
+
     bs.sign_all()
+
+
+if __name__ == "__main__":
+    main()
