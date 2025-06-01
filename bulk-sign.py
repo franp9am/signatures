@@ -1,6 +1,7 @@
 import configparser
 import logging
 import os
+from pathlib import Path
 from typing import Optional, Tuple
 
 from pyhanko import stamp
@@ -104,6 +105,8 @@ class BulkSigner:
         )
 
     def sign_one(self, input_pdf_path: str, output_pdf_path: str):
+        logger.info(f"Signing {input_pdf_path} -> {output_pdf_path}")
+        Path(output_pdf_path).parent.mkdir(parents=True, exist_ok=True)
         with open(input_pdf_path, "rb") as f:
             w = IncrementalPdfFileWriter(f)
             fields.append_signature_field(
@@ -116,3 +119,11 @@ class BulkSigner:
 
             with open(output_pdf_path, "wb") as final_output:
                 self.pdf_signer.sign_pdf(w, output=final_output)
+
+
+if __name__ == "__main__":
+    bs = BulkSigner()
+    bs.sign_one(
+        input_pdf_path="unsigned/test.pdf",
+        output_pdf_path="signed/test-signed.pdf",
+    )
