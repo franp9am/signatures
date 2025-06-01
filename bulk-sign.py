@@ -123,6 +123,9 @@ class BulkSigner:
 
     def sign_one(self, input_pdf_path: str, output_pdf_path: str):
         logger.info(f"Signing {input_pdf_path} -> {output_pdf_path}")
+        if self.use_lta:
+            logger.info("Using TSA timestamper for long-term validity")
+
         Path(output_pdf_path).parent.mkdir(parents=True, exist_ok=True)
         with open(input_pdf_path, "rb") as f:
             w = IncrementalPdfFileWriter(f)
