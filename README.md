@@ -35,3 +35,8 @@ For the LTA long-term validity, a qualified timestamp is needed. Current code is
 It is eIDAS qualified and valid in EU.
 
 It is not clear what are the rate limits, if there are some. Please use modestly. No guarantees.
+
+
+## Great validation site
+
+https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/validation
