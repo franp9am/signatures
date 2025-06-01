@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Optional, Tuple
 
 from pyhanko import stamp
+from pyhanko.sign.general import load_cert_from_pemder
 from pyhanko.pdf_utils import images
 from pyhanko.pdf_utils.incremental_writer import IncrementalPdfFileWriter
 from pyhanko.sign import (PdfSignatureMetadata, PdfSigner, fields, signers,
@@ -37,6 +38,8 @@ class BulkSigner:
         use_lta: bool = False,
         tsa_root_cert_path: str = "certs/SectigoQualifiedTimeStampingRootR45.crt",
         tsa_intermediate_cert_path: str = "certs/SectigoQualifiedTimeStampingCAR35.crt",
+        cert_root: str = "certs/postsignum_qca4_root.pem",
+        cert_intermediate: str = "certs/postsignum_qca4_sub.pem",
     ):
         config = configparser.ConfigParser()
         config.read(config_path)
@@ -60,14 +63,17 @@ class BulkSigner:
         bbox_y_max = config["stamp"]["bbox_y_max"]
         self.bbox = tuple(map(int, (bbox_x_min, bbox_y_min, bbox_x_max, bbox_y_max)))
 
-        if use_lta:
-            validation_context = ValidationContext(
-                extra_trust_roots=[tsa_root_cert_path],
-                other_certs=[tsa_intermediate_cert_path],
-                allow_fetching=True,
-            )
-        else:
-            validation_context = ValidationContext(allow_fetching=True)
+        
+        tsa_root_cert = load_cert_from_pemder(tsa_root_cert_path)
+        tsa_intermediate_cert = load_cert_from_pemder(tsa_intermediate_cert_path)
+        my_root_cert = load_cert_from_pemder(cert_root)
+        my_intermediate_cert = load_cert_from_pemder(cert_intermediate)
+
+        validation_context = ValidationContext(
+            extra_trust_roots=[tsa_root_cert, my_root_cert],
+            other_certs=[tsa_intermediate_cert, my_intermediate_cert],
+            allow_fetching=True,
+        )
 
         signature_meta = PdfSignatureMetadata(
             field_name="Signature1",
