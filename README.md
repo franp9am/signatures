@@ -15,7 +15,7 @@ Sectigo seems to be offering this for free at present time.
 
 ### Dependencies
 * get python and pip or uv
-* clone this repository, for instance https://github.com/franp9am/signatures.git
+* clone this repository, for instance `git clone https://github.com/franp9am/signatures.git`
 * copy `config_template.ini` to `config.ini` and complete the path to the .p12 file with your encrypted private key
 * install python dependencies with `pip install -e .` (slow) or `uv pip install -e .` (fast)
   
