@@ -2,7 +2,7 @@ Personal experiments with PDF document's
 
 ## Bulk signing
 
-E-signs all documents in a folder.
+E-signs all documents in a folder with the pyHanko package.
 If LTA (long-term-validity) is required, we need a qualified time-stamp.
 Sectigo seems to be offering this for free at present time.
 
