@@ -127,7 +127,7 @@ class BulkSigner:
 
     def sign_one(self, input_pdf_path: str, output_pdf_path: str):
         logger.info(f"Signing {input_pdf_path} -> {output_pdf_path}")
-        if self.use_lta:
+        if self.pades_time_level != "B-B":
             logger.info("Using TSA timestamper for long-term validity")
 
         Path(output_pdf_path).parent.mkdir(parents=True, exist_ok=True)
@@ -172,7 +172,7 @@ def main():
         "--p12-password", "-pp", type=str, help="Password for P12 file", default=None
     )
     parser.add_argument(
-        "--b_t"
+        "--b_t",
         "-t",
         action="store_true",
         help="Use B-T time level",
@@ -180,9 +180,9 @@ def main():
     )
 
     parser.add_argument(
-        "--b_lt"
+        "--b_lt",
         "-lt",
-        type=str,
+        action="store_true",
         help="B-LT time level",
         default=False,
     )
@@ -190,7 +190,7 @@ def main():
     parser.add_argument(
         "--b_lta",
         "-lta",
-        type=str,
+        action="store_true",
         help="B-LTA time level",
         default=False,
     )
@@ -212,8 +212,6 @@ def main():
         PADES_TIME_LEVEL = "B-LT"
     elif args.b_lta:
         PADES_TIME_LEVEL = "B-LTA"
-    else:
-        raise ValueError("Invalid time level")
 
     bs = BulkSigner(
         config_path=args.config,
