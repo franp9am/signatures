@@ -39,3 +39,10 @@ It is not clear what are the rate limits, if there are some. Please use modestly
 ## Great validation site
 
 https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/validation
+
+
+## Todo
+
+* pause between every tsa calls (there are 2 calls in LTA)
+* retrials
+* disable copy-pasting or pdf-printing, if required
