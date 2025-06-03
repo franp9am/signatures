@@ -26,8 +26,7 @@ Sectigo seems to be offering this for free at present time.
 
 * `python bulk-sign -h` prints help
 * `python bulk-sign -pp my_p12_file_password` signs all documents with the B-B validity level: pdf's are legally valid as long as your certificate is valid
-* `python bulk-sign -pp my_p12_file_password -l` signs all documents with the B-LTA validity level: pdf's are valid forever or untill crypto algorithms are broken
-* (TODO: support for B-LT level which only requires one time-stamps, not two)
+* `python bulk-sign -pp my_p12_file_password -lta` signs all documents with the B-LTA validity level: pdf's are valid forever or untill crypto algorithms are broken
 
 ### Qualified timestamps provider
 
