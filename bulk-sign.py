@@ -34,7 +34,7 @@ class BulkSigner:
         config_path: str = "config.ini",
         p12_file: Optional[str] = None,
         p12_password: Optional[str] = None,
-        use_lta: bool = False,
+        pades_time_level: str = "B-B",
         tsa_root_cert_path: str = "certs/SectigoQualifiedTimeStampingRootR45.crt",
         tsa_intermediate_cert_path: str = "certs/SectigoQualifiedTimeStampingCAR35.crt",
         cert_root: str = "certs/postsignum_qca4_root.pem",
@@ -84,12 +84,16 @@ class BulkSigner:
             allow_fetching=True,
         )
 
+        use_timestamp = pades_time_level in {"B-T", "B-LT", "B-LTA"}  # Add timestamp
+        embed_validation_info = pades_time_level in {"B-LT", "B-LTA"}  # Embed revocation info
+        use_pades_lta = pades_time_level == "B-LTA"  # Archival-level signature
+
         signature_meta = PdfSignatureMetadata(
             field_name="Signature1",
-            subfilter=fields.SigSeedSubFilter.PADES if use_lta else None,
-            embed_validation_info=use_lta,
+            subfilter=fields.SigSeedSubFilter.PADES,
+            embed_validation_info=embed_validation_info,
             validation_context=validation_context,
-            use_pades_lta=use_lta,
+            use_pades_lta=use_pades_lta,
             certify=True,
         )
 
@@ -103,7 +107,7 @@ class BulkSigner:
 
         timestamper = (
             timestamps.HTTPTimeStamper("http://timestamp.sectigo.com/qualified")
-            if use_lta
+            if use_timestamp
             else None
         )
 
@@ -119,7 +123,7 @@ class BulkSigner:
             stamp_style=stamp_style,
         )
 
-        self.use_lta = use_lta
+        self.pades_time_level = pades_time_level
 
     def sign_one(self, input_pdf_path: str, output_pdf_path: str):
         logger.info(f"Signing {input_pdf_path} -> {output_pdf_path}")
@@ -150,7 +154,7 @@ class BulkSigner:
                 )
                 continue
             self.sign_one(input_pdf_path, output_pdf_path)
-            if self.use_lta:
+            if self.pades_time_level != "B-B":
                 logger.info("Sleeping for 15 seconds to avoid rate limiting")
                 time.sleep(15)
 
@@ -168,12 +172,29 @@ def main():
         "--p12-password", "-pp", type=str, help="Password for P12 file", default=None
     )
     parser.add_argument(
-        "--use-lta",
-        "-l",
+        "--b_t"
+        "-t",
         action="store_true",
-        help="Use LTA for timestamping",
+        help="Use B-T time level",
         default=False,
     )
+
+    parser.add_argument(
+        "--b_lt"
+        "-lt",
+        type=str,
+        help="B-LT time level",
+        default=False,
+    )
+
+    parser.add_argument(
+        "--b_lta",
+        "-lta",
+        type=str,
+        help="B-LTA time level",
+        default=False,
+    )
+
     parser.add_argument(
         "--config",
         "-c",
@@ -184,11 +205,21 @@ def main():
 
     args = parser.parse_args()
 
+    PADES_TIME_LEVEL = "B-B"
+    if args.b_t:
+        PADES_TIME_LEVEL = "B-T"
+    elif args.b_lt:
+        PADES_TIME_LEVEL = "B-LT"
+    elif args.b_lta:
+        PADES_TIME_LEVEL = "B-LTA"
+    else:
+        raise ValueError("Invalid time level")
+
     bs = BulkSigner(
         config_path=args.config,
         p12_file=args.p12_file,
         p12_password=args.p12_password,
-        use_lta=args.use_lta,
+        pades_time_level=PADES_TIME_LEVEL,
     )
 
     bs.sign_all()
