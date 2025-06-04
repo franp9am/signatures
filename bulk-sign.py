@@ -13,6 +13,7 @@ from pyhanko.sign import PdfSignatureMetadata, PdfSigner, fields, signers, times
 from pyhanko.sign.fields import SigFieldSpec
 from pyhanko.sign.general import load_cert_from_pemder
 from pyhanko_certvalidator import ValidationContext
+from asn1crypto import tsp
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -26,6 +27,21 @@ formatter = logging.Formatter(
 )
 console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
+
+
+
+class HttpTimeStamperWithDelay(timestamps.HTTPTimeStamper):
+    def __init__(self, delay: int = 15, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.delay = delay
+
+    async def async_request_tsa_response(self, req: tsp.TimeStampReq) -> tsp.TimeStampResp:
+        logger.info("calling the tsa server")
+        res = await super().async_request_tsa_response(req)
+        logger.info("sleeping for 15 seconds")
+        time.sleep(self.delay)
+        logger.info("done sleeping")
+        return res
 
 
 class BulkSigner:
@@ -106,7 +122,7 @@ class BulkSigner:
             raise RuntimeError("Failed to load signer")
 
         timestamper = (
-            timestamps.HTTPTimeStamper("http://timestamp.sectigo.com/qualified")
+            HttpTimeStamperWithDelay(url="http://timestamp.sectigo.com/qualified")
             if use_timestamp
             else None
         )
@@ -154,9 +170,6 @@ class BulkSigner:
                 )
                 continue
             self.sign_one(input_pdf_path, output_pdf_path)
-            if self.pades_time_level != "B-B":
-                logger.info("Sleeping for 15 seconds to avoid rate limiting")
-                time.sleep(15)
 
 
 def main():
