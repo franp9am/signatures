@@ -30,10 +30,10 @@ Sectigo seems to be offering this for free at present time.
 
 ### Qualified timestamps provider
 
-For the LTA long-term validity, a qualified timestamp is needed. Current code is configured to call the "http://timestamp.sectigo.com/qualified" endpoint which seems to work for free and without registration.
+For the LTA long-term validity, a qualified timestamp is needed. Current code is configured to call the "sectigo" endpoint which seems to work for free for testing purposes.
 It is eIDAS qualified and valid in EU.
 
-It is not clear what are the rate limits, if there are some. Please use modestly. No guarantees.
+It is not clear what are the rate limits or how long it will work. Please use modestly.
 
 
 ## Great validation site
