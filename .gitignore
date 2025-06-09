@@ -1,3 +1,6 @@
 signed
 config.ini
 tmp.py
+.env
+.venv
+venv
