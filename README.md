@@ -43,6 +43,6 @@ https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/validation
 
 ## Todo
 
-* pause between every tsa calls (there are 2 calls in LTA)
 * retrials
+* more cli commands
 * disable copy-pasting or pdf-printing, if required
