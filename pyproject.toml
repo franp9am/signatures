@@ -2,7 +2,7 @@
 name = "pdf-signatures"
 version = "0.1.0"
 dependencies = [
-    "pyHanko[pkcs11,image-support,opentype,qr,stamp]"
+    "pyHanko[pkcs11,image-support,opentype,qr]"
 ]
 
 [tool.setuptools]

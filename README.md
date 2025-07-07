@@ -46,3 +46,20 @@ https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/validation
 * retrials
 * more cli commands
 * disable copy-pasting or pdf-printing, if required
+
+
+## Windows setup for non-pythonists
+
+* Open windows powershell
+* winget install --id Git.Git -e --source winget
+  * restart powershell if necessary
+* winget install --id Python.Python.3.11 -e --source winget
+  * restart powerhell if necessary
+* git clone https://github.com/franp9am/signatures.git
+* cd signatures
+* cp config_template.ini config.ini
+* edit config.ini, get path to your credentials file
+* python -m venv venv
+* .\venv\Scripts\Activate.ps1
+* pip install .
+* python bulk-sign.py -h
