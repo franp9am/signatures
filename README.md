@@ -7,7 +7,7 @@ E-signs all documents in a folder with the pyHanko package.
 ## Basic instructions
 
 * get python and pip or uv
-* copy `config_template.ini` to `config.ini` and complete the path to the .p12 file with your encrypted private key
+* copy `config-template.ini` to `config.ini` and complete the path to the .p12 file with your encrypted private key
 * install python dependencies with `pip install .` (slow) or `uv pip install .` (fast)
   
 ### Folders with pdf's
@@ -44,7 +44,7 @@ https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/validation
 * restart powerhell
 * git clone https://github.com/franp9am/signatures.git
 * cd signatures
-* cp config_template.ini config.ini
+* cp config-template.ini config.ini
 * edit config.ini, get path to your credentials file
 * python -m venv venv
 * .\venv\Scripts\Activate.ps1
