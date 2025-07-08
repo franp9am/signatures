@@ -6,9 +6,7 @@ E-signs all documents in a folder with the pyHanko package.
 
 ## Basic instructions
 
-### Dependencies
 * get python and pip or uv
-* clone this repository, for instance `git clone https://github.com/franp9am/signatures.git`
 * copy `config_template.ini` to `config.ini` and complete the path to the .p12 file with your encrypted private key
 * install python dependencies with `pip install .` (slow) or `uv pip install .` (fast)
   
@@ -41,9 +39,9 @@ https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/validation
 
 * Open windows powershell
 * winget install --id Git.Git -e --source winget
-  * restart powershell if necessary
+* restart powershell
 * winget install --id Python.Python.3.11 -e --source winget
-  * restart powerhell if necessary
+* restart powerhell
 * git clone https://github.com/franp9am/signatures.git
 * cd signatures
 * cp config_template.ini config.ini
