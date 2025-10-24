@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Elektronický podpis a přerazítkovací lobby</title>
+</head>
+<body>
+    <h1>Elektronický podpis a přerazítkovací lobby</h1>
+    
+    <p class="intro">Toto je třetí část mé minisérie o časových razítkách. Popíši tady v česku rozšířenou praxi přerazítkovávat dokumenty víc než je potřeba. Také se dotkneme doručenek z datových schránek.</p>
+
+    <h2>Přerazítkovací business</h2>
+
+    <p>V české praxi se často mluví o nutnosti přerazítkovat různé dokumenty pravidelně, vždy až předešlému časovému razítku "vyprší platnost". Obvykle se to objevuje buď v kontextu pdf dokumentů, nebo doručenek z datových zpráv.</p>
+
+    <p>Na následujících webových stránkách se všude píše o jakési pětileté lhůtě, kdy je potřeba dokument přerazítkovat:</p>
+    <ul>
+        <li>
+            <i>...prodloužíte jeho platnost až na 5 let</i>
+            (<A href="https://web.archive.org/web/20250828001558/https://www.ceskaposta.cz/sluzby/certifikacni-autorita-postsignum/casova-razitka">Česká pošta</A>)
+        </li>
+        <li>
+            <i> Navíc prodlužuje platnost dokumentu o 5 let.</i>
+            (<A href="https://web.archive.org/web/20250908000914/https://www.usbtokeny.cz/kvalifikovana-casova-razitka-tsa/kvalifikovana-casova-razitka-postsignum-100-ks-vc-vzdaleneho-nastaveni-/">USBtokeny</A>)
+        </li>
+        <li>
+            <i>...legislativně platný digitalizovaný dokument musí být opatřen časovým razítkem, které má ze zákona platnost jen 5&nbsp;let. Pak se musí přerazítkovat.</i>
+            (<A href="https://web.archive.org/web/20250812053502/https://www.602.cz/casova-razitka-pro-firmy">Software602</A>)
+        </li>
+    </ul>
+
+    <p>Shodou okolností jsou to všechno zdroje, které časová razítka a související služby prodávají – a mají z toho zisk.</p>
+
+    <p>Nejdále v tomto směru zašel asi DigiSign, který dramaticky popisuje, co se stane někomu, kdo by si dokument zapomněl přerazítkovat. Uvádím delší citaci pro ilustraci stylu, kterým některé firmy přerazítkování propagují:</p>
+
+    <blockquote>
+        <i>
+            <p>Dávejte však pozor – po jednom opomenutí obnovy razítka už nemůžete zastarání zvrátit. Dokumenty stárnou, ale zpětně „omladit" je už nedokážete. I proto umí DigiSign dokumenty opatřit razítky automaticky (placená funkce).</p>
+            <p>Možná už ale máte dokument, který zastaral a napadá vás, jestli je to skutečně neřešitelný problém. Řešení existuje, ale je nejisté a nákladné – budete potřebovat soudního znalce, který posoudí pravost a autenticitu dokumentu a neplatného podpisu nebo pečeti. Přidávání časových razítek může znít jako otravná práce navíc, ale oproti této alternativně to nakonec není tak hrozné.</p>
+        </i>
+    </blockquote>
+
+    (<A href="https://web.archive.org/web/20250812173735/https://www.digisign.cz/blog/digitalni-kontinuita/">DigiSign</A>)
+
+    <p><b>Ve skutečnosti však neexistuje žádná norma ani zákon, český ani evropský, který by omezoval platnost dokumentů na 5 let.</b></p> 
+    
+    <p>Neříká to ani eIDAS, ani EU normy, ani český zákon 297/2016 Sb. <A href="https://www.nacr.cz/verejnost/2-predarchivni-pece/verejnopravni-puvodci/spisova-sluzba-otazky-odpovedi">Oficiální metodický výklad Národního archivu ČR</A>, který je ústřední institucí pro oblast archivnictví a spisové služby, výslovně uvádí, že žádný právní předpis neukládá povinnost "přerazítkovávat" elektronické dokumenty před vypršením platnosti certifikátu.</p>
+
+    <blockquote>
+        <i>
+           <p>„Nevyplývá z nich však povinnost opatřovat opakovaně před expirací platnosti certifikátu, na kterém je 'založeno elektronické časové razítko' […], dokument dalším elektronickým časovým razítkem ('přerazítkování')."</p>
+        </i>
+    </blockquote>
+
+    <p>Tyto věty vypadají téměř jako reakce na výše uvedené firemní praktiky.</p>
+
+    <p>Některé instituce by mohly argumentovat tím, že po vypršení TSA certifikátů je obtížné ověřit správnost času, ale tato obava je spíše teoretická, jak bylo vysvětleno minule. Opět připomínám <a href="https://eur-lex.europa.eu/legal-content/CS/ALL/?uri=celex%3A32014R0910">citaci z eIDAS</a>: <i>U kvalifikovaného elektronického časového razítka platí domněnka správnosti data a času.</i></body></html></p>
+
+    <p>Normy ETSI sice připouštějí možnost pravidelného pře-razítkování jako jeden z možných mechanismů dlouhodobé ochrany, ale nikde jej neukládají jako povinnost ani nestanovují konkrétní lhůtu.</p>
+
+    <p>Není tedy pravda, že by dokument musel být pravidelně znovu a znovu přerazítkován. Podpis může být dlouhodobě platný i bez toho.</p>
+
+    <h2>Datové schránky</h2>
+
+    <p>Datová zpráva obvykle obsahuje dvě části: přílohu (PDF dokument) a doručenku (ZFO dokument).</p>
+
+    <p>Samotná příloha může, ale nemusí být podepsána – to záleží na odesílateli. Soubor ZFO je vygenerován datovou schránkou a obsahuje metadata o zprávě: kdy, kdo, komu a otisk zprávy. Tento ZFO soubor je vždy podepsán CAdES elektronickým podpisem s omezenou dobou platnosti. Zároveň ISDS uchovává tento ZFO soubor 90 dní (pokud ho uživatel nedá do trezoru) a poté uchovává část metadat (hash ZFO souboru, odesílatele a doručitele) dlouhodobě.</p>
+
+    <p>Tím, že ISDS uchovává hash každé doručenky, umožňuje kdykoli ověřit její integritu. Stačí mít k dispozici původní ZFO soubor a otevřít ho v datové schránce přes „Otevřít ZFO" → „Zobrazit doručenku".</p>
+
+    <p>Pokud tedy z nějakého důvodu potřebuji důkaz o doručení, stačí neztratit ten ZFO dokument.</p>
+
+    <p>Datová schránka ale nabízí možnost přerazítkování ZFO souboru a "prodloužení platnosti pečeti". Je tam zvláštní text: "doručenka platí do data XY, ale i po tomto datu však bude soubor platný a ověřitelný pro ISDS". Na webu také najdeme mnoho návodů ve kterých se vysvětluje, "jak přerazítkovat ZFO soubor".</p>
+
+    <p>K čemu je ale dobré takové přerazítkování? Dokud ISDS existuje, stačí ten soubor mít. Až ISDS jednou přestane existovat, pak nebude fungovat ani jejich systém přerazítkování. Smysl by dávalo, kdyby ZFO bylo podepsáno s dlouhodobou platností (např. na úrovni B-LTA), ale to zatím nedělají.</p>
+
+    <p>Pokud je pro někoho důležitá dlouhodobá ověřitelnost doručenky, je lepší místo pravidelného přerazítkování vytvořit archivní pečeť LTA úrovně a nechat to tak. Takovou pečeť může technicky vytvořit kdokoli, nejen původní podepisovatel.</p>
+
+    <p>Je však dobré poznamenat, že ISDS provozuje Česká pošta, která přímo na svém webu šíří informaci o nutnosti neustálého přerazítkovávání. Takže se nelze divit, že rádi mnohokrát přerazítkují i každou doručenku.</p>
+
+<img src="overstamping.png" alt="Overstamping (ChatGPT-art)">
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Elektronický podpis v kostce</title>
+<body>
+    <h1>Elektronický podpis v kostce</h1>
+    
+    <p class="intro">Elektronický podpis dokumentů je nástroj, který umožňuje zachovat informaci o tom, kdo dokument podepsal. V určitých případech nahrazuje fyzický podpis.</p>
+    
+    <p>V tomto článku popíšu hlavní principy jak funguje digitální podepisování a co zaručí dlouhodobou ověřitelnost.</p>
+    
+    <p>Pro jednoduchost zde nerozlišuji mezi pojmy "elektronický podpis" a "elektronické razítko" (v terminologii eIDAS "signature" / "seal").</p>
+
+    <h2>Jak to funguje</h2>
+
+    <p>Technické a právní aspekty elektronických podpisů se řídí evropskou regulací eIDAS (nařízení EU č. <A href="https://eur-lex.europa.eu/legal-content/CS/TXT/PDF/?uri=CELEX:32014R0910">910/2014</A> a <A href="  https://eur-lex.europa.eu/legal-content/CS/TXT/?uri=CELEX:32024R1183">2024/1183</A>) a českým zákonem č. <A href="https://www.zakonyprolidi.cz/cs/2016-297">297/2016 Sb.</A></p>
+    
+    <p>Aby mohl subjekt digitálně podepisovat a podpis měl právní váhu, musí získat certifikát od Qualified Trust Service Provider (QTSP), například od České pošty. Certifikát má obvykle dobu platnosti 1 až 2 roky od vydání.</p>
+    
+    <p>Důležitou součástí certifikátu je pár asymetrických klíčů.</p>
+    
+    <p>Soukromý klíč by nikdy neměl opustit zařízení uživatele. Naopak veřejný klíč je veřejně dostupný a po dobu platnosti certifikátu provozovatel zajišťuje OCSP službu, která komukoli kdykoli potvrdí, zda je daný certifikát platný či odvolaný.</p>
+    
+    <p>Nařízení eIDAS rozlišuje úrovně "Advanced" a "Qualified" elektronického podpisu. Rozdíl spočívá především v tom, zda je soukromý klíč uložen v běžném počítači, nebo na speciálním kvalifikovaném zařízení, ze kterého je jeho zkopírování či odcizení výrazně obtížnější.</p>
+
+    <h2>Technologie v kostce</h2>
+
+    <p>Samotný podpis spočívá v tom, že se do dokumentu vloží hash podepisované části (např. celého dokumentu nebo vybraného rozsahu bajtů), který je zašifrován soukromým klíčem podepisovatele.</p>
+
+    <p>Ověřovatel může následně spočítat hash daného rozsahu a pomocí veřejného klíče podepisovatele ověřit, že odpovídá hodnotě uložené v podpisu. To dokládá, že podpis vytvořil držitel soukromého klíče.</p>
+
+    <p>Pokud dojde k úniku nebo ztrátě soukromého klíče, může jeho držitel certifikát zneplatnit a požádat o vydání nového.</p>
+
+    <h2>Časová platnost</h2>
+
+    <p>Výše uvedeným způsobem může ověřovatel dokázat platnost podpisu jen tehdy, pokud je v daný moment certifikát platný a vydavatel potvrdí, že nebyl odvolán.</p>
+
+    <p>Až certifikát vyprší, nelze ho už používat k podepisování. Aby ověřovatel uznal podpis za platný, bude potřebovat důkaz, že byl dokument podepsán ještě v době platnosti certifikátu. Po nějaké době vydavatel certifikátu přestane veřejně poskytovat informace o tom, zda certifikát existoval a zda byl nebo nebyl odvolán.</p>
+
+    <p>Bez dalších prvků v podpisu by tedy podpis platil jen tak dlouho jako certifikát. Proto je potřeba přidat k podpisu další informace, které prodlouží možnost ověření na dlouhou dobu – potenciálně navždy.</p>
+
+    <p>Časové razítko je podpis certifikovaného poskytovatele časových razítek (TSA, Timestamp Authority). TSA poskytuje časové razítko typicky jako zpoplatněnou webovou službu. Uživatel pošle bajty a vrátí se mu podepsané bajty s přesným časem a s podpisem od TSA. Takový čas nelze zfalšovat – na rozdíl například od času z počítačových hodin.</p>
+
+    <p>Evropské normy ETSI definují čtyři úrovně časové platnosti podpisu: B-B, což je jen podpis bez časového razítka, B-T, tedy podpis s časovým razítkem, a poté B-LT a B-LTA, kde jsou přidány další prvky potřebné k dlouhodobé ověřitelnosti (<A href="https://www.etsi.org/deliver/etsi_en/319100_319199/31914201/01.02.01_60/en_31914201v010201p.pdf">ETSI EN 319 142</A> pro PDF dokumenty, <A href="https://www.etsi.org/deliver/etsi_en/319100_319199/31912201/01.02.01_60/en_31912201v010201p.pdf">ETSI EN 319 122-1</A> pro CMS zprávy a <A href="https://www.etsi.org/deliver/etsi_en/319100_319199/31913201/01.02.01_60/en_31913201v010201p.pdf">ETSI EN 319 132-1</A> pro XML dokumenty).</p>
+
+    <p>Podpis typu B-B jsme popsali výše a platí do konce platnosti vašeho certifikátu. Pokud vám končí platnost certifikátu zítra, váš dnešní podpis je technicky vzato platný do zítra. I poté má určitou váhu, ta však bude s časem slábnout a uznání by nebylo zcela automatické.</p>
+
+    <p>Úroveň B-T přidává k podpisu časové razítko, což ale prodlouží platnost podpisu jen mírně. I když bude možné v budoucnosti ověřit, že podpis vznikl před odvoláním nebo před vypršením platnosti certifikátu, nic to nemění na tom, že za několik let bude vše zapomenuto – nikdo už nebude moct dokázat, že certifikát existoval a byl platný.</p>
+
+    <p>Standard B-LT proto přidává tyto důležité prvky:</p>
+    
+    <ul>
+        <li>Kromě certifikátu podepisovatele se do dokumentu vloží informace o tom, kdo ho vydal a kdo vydal certifikát vydavateli – až po kořen. Tento řetěz certifikátů je kryptograficky ověřitelný a stačí, aby budoucí ověřovatel znal certifikát kořenové autority. (Kořenové certifikáty jsou udržovány v <A href="https://eidas.ec.europa.eu/efda/trust-services/browse/eidas/tls">EU Trusted List</A> seznamu.)</li>
+        
+        <li>Důkaz, že certifikát byl platný ve své době. To znamená, že se do dokumentu vloží podepsaná odpověď OCSP která říká, že "k tomu a tomu datu je tento certifikát platný". Důvěryhodné časové razítko zaručí, že vše, co je v dokumentu, je pravda.</li>
+    </ul>
+
+    <p>S těmito prvky může ověřovatel dokázat pravost podpisu i po mnoha letech, a to i v situaci, kdy už dávno neexistuje instituce, která certifikát vydala (například Česká pošta), i offline – stačí, aby ověřovatel znal kořenové certifikáty.</p>
+
+    <p>To se může hodit třeba tehdy, až jednou padne civilizace i internet, a vy přesto budete chtít dokázat, že vám někdo před 30 lety daroval les plný zvěře. Ověřovatel dokumentů bude znát veřejný certifikát kořenové autority. Předpokládejme navíc, že ověřovatel nelže. Pak mu bude stačit použít čip ze staré pračky nebo <A href="https://medium.com/@shivashanker7337/turning-trash-into-treasure-building-a-web-server-from-a-disposable-vape-af936b4dd377">e-cigarety</A>, na kterém provede výpočet ověření. Na papíře by to bylo přece jen obtížné.</p>
+</body>
+</html>

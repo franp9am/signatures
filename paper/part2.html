@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Elektronický podpis: slabiny a možnosti přerazítkování</title>
+</head>
+<body>
+    <h1>Elektronický podpis: slabiny a možnosti přerazítkování</h1>
+    
+    <p class="intro">Toto je druhá část mé minisérie o elektronických podpisech. V prvním díle jsme si vysvětlili základní princip ověření a dlouhověkosti. Teď se podíváme na možné systémové slabiny.</p>
+
+    <h2>Důvěryhodnost času</h2>
+
+    <p>Poskytovatel certifikovaného času (TSA) musí mít k tomu pověření jako Qualified Trust Service Provider (QTSPs) a má vlastní certifikát, který má také omezenou dobu platnosti.</p>
+
+    <p>Určitá slabina by mohla nastat, kdyby byl klíč časovo-razítkovače ukraden a někdo chtěl uvést nesprávný čas. Certifikát provozovatele TSA lze sice také zneplatnit, ale po velmi dlouhé době to může být zapomenuto či ztraceno.</p>
+
+    <p>Právě proto je však služba TSA vysoce regulovaná. Její soukromý klíč musí být uložen na speciálním zařízení HSM (Hardware Security Module), které fyzicky brání kopírování. Přesný čas se generuje pomocí synchronizace s atomovými hodinami. Provozovatelé TSA podléhají pravidelným auditům a dlouhodobě archivují záznamy o každém vydaném časovém razítku, které umožňují zpětně ověřit jeho pravost. Jakýkoli rozpor by tak byl dohledatelný i dlouhou dobu po technickém vypršení jejich certifikátu.</p>
+
+    <p>I kdyby útočník-"časokaz" získal jejich podepisovací nástroje, měl by to nesmírně těžké. Aby mohl zfalšovat čas a způsobit reálnou škodu, musel by navíc získat i privátní klíč OCSP poskytovatele certifikátu podepisovatele. Tato OCSP odpověď sama obsahuje podepsané časové údaje s daným datem, takže by musel mít schopnost změnit i ty.</p>
+
+    <p><A href="https://eur-lex.europa.eu/legal-content/CS/ALL/?uri=celex%3A32014R0910">eIDAS norma článek 41</A> proto uvádí:</p>
+
+    <blockquote>
+        <p><i>U kvalifikovaného elektronického časového razítka platí <b>domněnka správnosti data a času</b>, které udává, a integrity dat, s nimiž jsou toto datum a tento čas spojeny.</i></p>
+    </blockquote>
+
+    <p>Toto je velmi důležitá část celého řetězce důvěry a v dalším díle se k tomu ještě vrátíme.</p>
+
+    <h2>Zneužití klíčů vydavatelů certifikátů (Qualified Trust Service Providerů)</h2>
+
+    <p>Dalším slabým místem je možnost, ve které by útočník získal nástroje vydavatele certifikátů, jako třeba Česká pošta. Pak by mohl vymyslet neexistující certifikát, falšovat OCSP odpovědi a podepisovat za zdánlivého uživatele který nic nepodepsal.</p>
+
+    <p>Z krátkodobého hlediska (několik let) by se takové zneužití pravděpodobně dalo odhalit — certifikát vydavatele by byl odvolán a incident by se dal dohledat v záznamech.</p>
+
+    <p>Z hlediska dlouhodobé ochrany podpisů tento scénář může být motivací k přerazítkování jednou za několik let. Součást přerazítkování pak vždy musí být kontrola všech certifikátů v podpisu, zda žádný nebyl před dobou podpisu odvolán nebo kompromitován. Za 5 let by se podvod ještě rozpoznal, za 50 let už nejspíš ne.</p>
+
+    <p>Nicméně toto je opět dost extrémní scénář a je k zamyšlení, zda stojí za práci a infrastrukturu s pravidelným prerazítkováním. eIDAS normy ani české zákony pravidelné přerazítkování nevyžadují, o čemž si podrobněji řekneme příště.</p>
+
+    <p>Teoreticky také nelze vyloučit situaci, že by byly nástroje QTSP ukradeny a kompromitace by nebyla odhalena. Pokud vím, tak eIDAS ekosystém tuto situaci neřeší. Opakované přerazítkování by tady nijak nepomohlo.</p>
+
+    <h2>Síla kryptografie</h2>
+
+    <p>Algoritmy, které se dnes používají, mohou být po čase prolomitelné. Útočník by pak mohl zfalšovat v principu všechno, protože celý řetěz důvěry stojí na asymetrické kryptografii.</p>
+
+    <p>Proto úroveň B-LTA navíc přidává možnost zapečetit celej dokument "archivním časovým razítkem", s tím, že jediné další změny budou další a další pečetě budoucími algoritmy, které budou kryptograficky silnější. Tyto budoucí pečetě poskytuje TSA. Původní podepisovatel už žádný další certifikát nepotřebuje, vždy se přidá jen čas a důkaz integrity celého dokumentu.</p>
+
+    <p>Pro tento use-case má tedy smysl přerazítkovat teprve tehdy, kdy hrozí, že stávající kryptografické algoritmy by se mohly stát zranitelnými. V takovém případě se vytvoří nové, silnější archivní časové razítko které zapečetí celý dokument včetně všech dosavadních podpisů, OCSP odpovědí a starších razítek. Ověřovatel pak při kontrole vidí, že dokument byl naposledy zapečetěn v době, kdy předešlý algoritmus byl stále považován za bezpečný, a může pokračovat v ověřování směrem do minulosti.</p>
+
+    <p>Od doby kdy vznikl systém eIDAS, to zatím nebylo nikdy reálně potřeba. Běžné algoritmy, které se používaly před 10 lety, jsou i dnes zcela bezpečné.</p>
+
+    <p>Pro srovnání: algoritmus RSA s 1024 bitovým klíčem se běžně používal do roku 2010 a dnes už není považován za bezpečný. Dosud však neexistuje veřejný důkaz o jeho prolomení. Prolomení i takto starého certifikátu by vyžadovalo extrémní výpočetní a lidské zdroje, pravděpodobně v řádu miliard korun — nejde o "nainstalování nějaké knihovny". A možná to zatím nejde vůbec.</p>
+
+    <p>Tím chci říct, že změny v tomto oboru (na rozdíl třeba od umělé inteligence) nejsou nijak zvlášť rychlé. V současnosti se používají algoritmy které mohou být ještě mnoho desetiletí bezpečné: buď RSA s klíčem 2048 bitů a více, nebo rychlejší (a stejně silné) algoritmy <a href="https://en.wikipedia.org/wiki/Elliptic-curve_cryptography">založené na eliptických křivkách</a>.</p>
+
+    <p>Všechny dnes běžně používané algoritmy by mohli prolomit kvantové počítače. Mluví se o tom teoreticky už mnoho let, ale zatím to nevypadá na nějaký radikální průlom. Nicméně pokud má někdo obavu o prolomení, pak přerazítkování silnějším algoritmem smysl dává. K tomu potřebuje TSA poskytovatele se silnějším algoritmem anebo delším klíčem. Existují i post-kvantové algoritmy, tj takové, o kterých se ví, že budou rezistentní i vůči budoucímu útoku kvantových počítačů. Jejich implementace do systému eIDAS se ale teprve připravuje.</p>
+</body>
+</html>
