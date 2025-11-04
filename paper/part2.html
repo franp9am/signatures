@@ -7,8 +7,16 @@
 <body>
     <h1>Elektronický podpis: slabiny a možnosti přerazítkování</h1>
     
-    <p class="intro">Toto je druhá část mé minisérie o elektronických podpisech. V prvním díle jsme si vysvětlili základní princip ověření a dlouhověkosti. Teď se podíváme na možné systémové slabiny. Nejčastější riziko je kompromitace vašeho soukromého klíče; to je ale poměrně zřejmý scénář, takže ho necháme stranou a zaměříme se na méně očividné útoky.</p>
+    <p class="perex">V prvním díle mé minisérie o elektronických podpisech jsme si vysvětlili základní princip ověření a dlouhověkosti. Teď se podíváme na možné systémové slabiny a na dlouhodobou platnost časových razítek.
 
+
+    <h2>Kompromitace soukromého klíče</h2>
+    <p>Toto je poměrně zřejmý scénář, který může způsobit škody, zvláště pokud klíč nebude včas odvolán. 
+        V ideálním případě by měl být soukromý klíč uložen na specializovaném zařízení nebo na serveru mimo váš pracovní počítač.
+        Pokud máte soukromý klíč jako soubor na disku, omezte přístup k němu na minimum. Běžný uživatel by měl vždy používat prostředníka (service/agent), který provádí kryptografické operace soukromým klíčem a přenáší mezi klientem a poskytovatelem jen data
+        (Například systémová služba CNG pod Windows, anebo PKCS#11 moduly na linuxu). 
+      </p>
+        
     <h2>Důvěryhodnost času</h2>
 
     <p>Poskytovatel certifikovaného času (TSA) musí mít k tomu pověření jako Qualified Trust Service Provider (QTSPs) a má vlastní certifikát, který má také omezenou dobu platnosti.</p>
