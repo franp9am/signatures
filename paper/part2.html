@@ -11,11 +11,9 @@
 
 
     <h2>Kompromitace soukromého klíče</h2>
-    <p>Toto je poměrně zřejmý scénář, který může způsobit škody, zvláště pokud klíč nebude včas odvolán. 
-        V ideálním případě by měl být soukromý klíč uložen na specializovaném zařízení nebo na serveru mimo váš pracovní počítač.
-        Pokud máte soukromý klíč jako soubor na disku, omezte přístup k němu na minimum. Běžný uživatel by měl vždy používat prostředníka (service/agent), který provádí kryptografické operace soukromým klíčem a přenáší mezi klientem a poskytovatelem jen data
-        (Například systémová služba CNG pod Windows, anebo PKCS#11 moduly na linuxu). 
-      </p>
+    <p>Toto je poměrně zřejmý scénář, který může způsobit škody, zvláště pokud klíč nebude včas odvolán. V ideálním případě by měl být soukromý klíč uložen na specializovaném zařízení nebo na serveru mimo váš pracovní počítač.</p>
+
+    <p>Pokud máte soukromý klíč jako soubor na disku, omezte přístup k němu na minimum. Běžný uživatel by měl vždy používat prostředníka (service/agent), který provádí kryptografické operace soukromým klíčem a přenáší mezi klientem a poskytovatelem jen data (Například systémová služba CNG pod Windows, anebo PKCS#11 moduly na linuxu). Chytrý virus bude mít pořád možnost něco podepsat co nechcete, ale alespoň vám neukrade klíč.</p>
         
     <h2>Důvěryhodnost času</h2>
 
@@ -44,8 +42,6 @@
     <p>Z hlediska dlouhodobé ochrany podpisů tento scénář může být motivací k přerazítkování jednou za několik let. Součást přerazítkování pak vždy musí být kontrola všech certifikátů v podpisu, zda žádný nebyl před dobou podpisu odvolán nebo kompromitován. Za 5 let by se podvod ještě rozpoznal, za 50 let už nejspíš ne.</p>
 
     <p>Nicméně toto je opět dost extrémní scénář a je k zamyšlení, zda stojí za práci a infrastrukturu s pravidelným prerazítkováním. eIDAS normy ani české zákony pravidelné přerazítkování nevyžadují, o čemž si podrobněji řekneme příště.</p>
-
-    <p>Teoreticky také nelze vyloučit situaci, že by nástroje QTSP byly zneužity a kompromitace by <b>nebyla</b> odhalena. Opakované přerazítkování by tady nijak nepomohlo.</p>
 
     <h2>Síla kryptografie</h2>
 
