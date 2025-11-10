@@ -12,53 +12,40 @@
         
     <h2>Nástroje</h2>
 
-    <p>Pro běžnou práci s elektronickými podpisy by nemělo být nutné kupovat placenej software.</p>
-    
-    <p>Pokud jste jednotlivec anebo malá firma a musíte jednou za čas podepsat nějaký pdf dokument, nejjednodušší je použít volnou verzi Adobe Acrobat (Windows, Mac) anebo Okular (Linux). 
-    
-    <p>Pokud chcete mít větší kontrolu nad tím, co děláte, anebo podepisování zautomatizovat pro větší dávky, existuje open source knihovna <A href="https://github.com/MatthiasValvekens/pyHanko">pyHanko</A>, která implementuje běžné věci kolem elektronických podpisů a razítek. <A href="https://github.com/franp9am/signatures/blob/main/bulk-sign.py">Tady</A> je minimalistická verze podepisovacího skriptu, která podporuje základní úrovně B-B, B-T, B-LT a B-LTA.</p>
-    
-    U mnoha podepsaných dokumentů stačí i krátkodobá ověřitelnost B-B, bez certifikovaného časového razítka. Příklady: komunikace s úřady, faktura, záruka na zboží s omezenou dobou platnosti apod.
-    
-    Pokud už kvalifikované časové razítko potřebujete, doporučuji estonskou firmu <A href="https://timestamping.skidsolutions.eu/">SK ID Solutions</A> která prodává kvalifikovaná razítka výrazně levněji než čeští prodejci. Cena jednoho časového razítka se tam pohybuje od 15 haléřů do 1 koruny. (Nejsem s nima nijak spojen, jen jsem to vygooglil a porovnal ceny.)</p>
+    <p>Certifikát k podepisování vám za poplatek v řádu stovek korun ročně vydá například <A href="https://www.postsignum.cz/certifikaty.html">PostSignum</A>, anebo jakýkoliv poskytovatel QTSP v EU. Rozlišuje se certifikát pro fyzické a právnické osoby.</p>
 
-    <p>V malém množství poskytuje kvalifikovaná časová razítka zdarma firma Sectigo (stav k říjnu 2025), hlavně pro <A href="https://www.sectigo.com/resource-library/time-stamping-server">testovací účely</A>.</p>
+    <p>Pro běžnou práci s elektronickými podpisy by nemělo být nutné kupovat placený software.</p>
+    
+    <p>Pokud jste jednotlivec anebo malá firma a musíte jednou za čas podepsat nějaký PDF dokument, nejjednodušší je použít volnou verzi Adobe Acrobat (Windows, Mac) anebo Okular (Linux).</p> 
+    
+    <p>Pokud chcete mít větší kontrolu nad tím, co děláte, anebo podepisování zautomatizovat pro větší dávky, existuje open source Python knihovna <A href="https://github.com/MatthiasValvekens/pyHanko">pyHanko</A>, která implementuje běžné věci kolem elektronických podpisů a razítek. <A href="https://github.com/franp9am/signatures/blob/main/bulk-sign.py">Tady</A> je minimalistická verze podepisovacího skriptu, která podporuje základní úrovně B-B, B-T, B-LT a B-LTA.</p>
+    
+    <p>U mnoha podepsaných dokumentů stačí i krátkodobá ověřitelnost B-B, bez certifikovaného časového razítka. Příklady: komunikace s úřady, faktura, záruka na zboží s omezenou dobou platnosti apod. Podpis bez časového razítka už nepřináší žádné další náklady, bez ohledu na to kolik dokumentů podepíšete.</p>
+    
+    <p>Pokud už kvalifikované časové razítko potřebujete, doporučuji estonskou firmu <A href="https://timestamping.skidsolutions.eu/">SK ID Solutions</A>, která prodává kvalifikovaná razítka výrazně levněji než čeští prodejci. Cena jednoho časového razítka se tam pohybuje od 15 haléřů do 1 koruny. (Nejsem s nima nijak spojen, jen jsem to vygooglil a porovnal ceny.) V malém množství poskytuje kvalifikovaná časová razítka zdarma firma Sectigo (stav k říjnu 2025), hlavně pro <A href="https://www.sectigo.com/resource-library/time-stamping-server">testovací účely</A>.</p>
     
     
-    <A href="https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/validation">Zde</A> je výborná validační webová stránka, která po nahrání dokumentu detailně ověří, co přesně v podpisu nebo časovém razítku je, na jaké úrovni, a zda to splňuje různé EU standardy.
+    <p><A href="https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/validation">Zde</A> je výborná validační webová stránka, která po nahrání dokumentu detailně ověří, co přesně v podpisu nebo časovém razítku je, na jaké úrovni, a zda to splňuje různé EU standardy.</p>
 
-    <h2> Sdílená razítka</h2>
+    <h2> Sdílená časová razítka</h2>
 
-    <p>Pokud máte velké množství dokumentů k dlouhodobé archivaci, tak opatřit je časovými razítky může představovat jeden z netriviálních nákladů.  Lze ho efektivně snížit použitím <B>sdílených razítek</B> (nenašel jsem na to zatím ustálený terminus technicus). </p>
-
-    <p>Pro důkaz integrity a času dokumentů můžeme získat TSA razítko hashe, kterej reprezentuje <b>větší skupinu dokumentů</b>.</p> 
+    <p>U <b>velkého množství</b> dokumentů k dlouhodobé archivaci mohou časová razítka představovat významný náklad. Ten lze výrazně snížit použitím <b>sdílených razítek</b>. Pro důkaz integrity a času dokumentů můžeme získat TSA razítko hashe, který reprezentuje <b>větší skupinu dokumentů</b>.</p> 
     
-    <p>Praktická implementace této myšlenky je popsal například německý úřad BSI ve své <A href="https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/ElekSignatur/esig_pdf.pdf">technické specifikaci (kapitola 4.18, 4.19.)</A>, anebo <A href="https://script-ed.org/wp-content/uploads/2022/02/3-sorge_leicht.pdf">akademická studie Sorge-Leicht (2012)</A>.
+    <p>Praktickou implementaci této myšlenky popsal například německý úřad BSI ve své <A href="https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/ElekSignatur/esig_pdf.pdf">technické specifikaci z roku 2023 (kapitola 4.18, 4.19.)</A>, anebo <A href="https://script-ed.org/wp-content/uploads/2022/02/3-sorge_leicht.pdf">akademická studie Sorge-Leicht (2012)</A>. V tomto schématu budeme dokumenty jedné skupiny, kterou chceme orazítkovat, reprezentovat jako listy binárního stromu. Ke každému dokumentu přiradíme jeho hash. Tzv. <A href="https://en.wikipedia.org/wiki/Merkle_tree">Merkleho strom</A> se zkonstruuje postupným výpočtem dalších hashů které reprezentují dokumenty pod každým uzlem. Časová autorita TSA poté vystaví jediné razítko na kořenový hash tohoto stromu, čímž je zajištěno, že všechny dokumenty ve stromu byly v daném čase v daném stavu. Pro ověření integrity jednoho z nich pak stačí daný dokument mít, znát hash souseda a hash každého souseda v cestičce ke kořenu stromu. Kdyby skupina měla milion dokumentů, měl by strom hloubku dvacet. Pro jeden jednotlivý dokument bych tedy potřeboval mít dvacet hashů a TSA orazítkovanej kořenovej hash. To bych pak ukázal ověřovateli.</p>
 
-    <p>V tomto schématu budeme dokumenty jedné skupiny, kterou chceme orazítkovat, reprezentovat jako listy binárního stromu. Ke každému dokumentu přiradíme jeho hash. Tzv. <A href="https://en.wikipedia.org/wiki/Merkle_tree">Merkleho strom</A> se zkonstruuje postupným výpočtem dalších hashů které reprezentují dokumenty pod každým uzlem. Časová autorita TSA poté vystaví jediné razítko na kořenovej hash tohoto stromu, čímž je zajištěno, že razítko pokrývá všechny dokumenty v dávce..</p> 
-    
-    <p>Pro ověření integrity nějakého dokumentu pak stačí mít původní dokument, znát hash souseda a hash každého souseda v cestičke ke kořenu stromu. Kdyby skupina měla milion dokumentů, měl by strom hloubku přibližně 20, a potřeboval bych k mému dokumentu znát přibližně 20 hashů. Ty bych pak ukázal ověřovateli společně s mým dokumentem.</p>
-
-    <p>Myšlenka Merklových stromů a sdílených důkazů vychází z blockchainové technologie, nicméně je plně kompatibilní s eIDAS normou. <A href="https://eur-lex.europa.eu/legal-content/CS/TXT/?uri=CELEX:32014R0910">Článek 42</A> říká:
-    <blockquote></blockquote>
-        <p><i>Kvalifikované elektronické časové razítko (...) spojuje datum a čas s daty takovým způsobem, aby byla přiměřeně <b>zamezena možnost nezjistitelné změny dat</b></i>.</p>
-    </blockquote>
-    </p>
-    Technický standard <A href="https://datatracker.ietf.org/doc/html/rfc4998#section-1.2">IETF RFC 4998 (Evidence Record Syntax)</A>
-    popisuje tento přístup explicitně. </p>
+    <p>Myšlenka Merklových stromů a sdílených důkazů vychází z blockchainové technologie, nicméně je plně kompatibilní s <A href="https://eur-lex.europa.eu/legal-content/CS/TXT/?uri=CELEX:32014R0910">eIDAS normou</A> a technický standard <A href="https://datatracker.ietf.org/doc/html/rfc4998#section-1.2">IETF RFC 4998 (Evidence Record Syntax)</A> popisuje tento přístup i explicitně.</p>
     
     
     <h2>Alternativy k eIDAS</h2>
 
-    <p>Ekosystém eIDAS je vymyšlen chytře, i když na první pohled to může působit složitější než by mělo být. Neexistuje lepší způsob jak dlouhodobě uchovat důvěru? Pomohla by tady úplně jiná technologie, více decentralizovaná, jako třeba blockchain? Napište mi do komentářů co o tom soudíte.</p>
+    <p>Ekosystém eIDAS je vymyšlen chytře, i když na první pohled to může působit složitější než by mělo být. Infrastruktura ověřování času přes TSA působí trochu centralizovaně a staromódně. Tady se možná nabízí něco více decentralizovaného, třeba na způsob blockchain technologie? Napište mi do komentářů co o tom soudíte.</p>
         
     <p>eIDAS 2024/1183 přináší do evropského právního rámce i pojem tzv. distributed ledger technology (DLT), tedy technologii distribuované účetní knihy. Nejde přitom o jeden konkrétní systém, ale o princip - data jsou zapisována do sdíleného, kryptograficky zabezpečeného registru, který mohou spravovat různí důvěryhodní účastníci současně.
     Zatím mi však není zcela jasné, jestli a jak to bude fungovat. 
     </p>
 
-    <p>Samostatnou kapitolou jsou elektronické podpisy a razítka, která lze vytisknout a uchovat fyzicky na papíře - třeba ve formě QR kódu, podobně jako u covid certifikátů. To by asi bylo spíš téma na samostatný článek, nicméně i eIDAS počítá s integrací takovýchto prvků do své budoucí infrastruktury.</p>
+    <p>Samostatnou kapitolou jsou elektronické podpisy a razítka, která lze vytisknout a <b>uchovat fyzicky na papíře</b> anebo na obrázku - třeba ve formě QR kódu, podobně jako u covid certifikátů. Pokud vím, eIDAS počítá s integrací takovýchto prvků do své budoucí infrastruktury.</p>
 
-    <p>Na závěr bych dodal, že i když je elektronický podpis hezká technologie, ničemu nevadí podepisovat dokumenty ručně – tak jako kdysi. Dokázat pravost může být někdy složitější, ale z hlediska práva v tom nakonec není rozdíl. Pokud by člověk chtěl, aby dokument vydržel opravdu dlouho, třeba stovky let, může být papír nakonec i jistější.</p>
-<img src="img/franek.png" alt="real Peter Franek">
+    <p>Na závěr bych dodal, že i když je elektronický podpis hezká technologie, ničemu nevadí podepisovat dokumenty ručně – tak jako kdysi. Doložit pravost může být někdy složitější, ale z hlediska práva v tom nakonec není rozdíl. Pokud by člověk chtěl, aby dokument vydržel opravdu dlouho, třeba stovky let, může být papír nakonec i jistější.</p>
 </body>
 </html>
