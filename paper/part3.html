@@ -29,12 +29,12 @@
     <blockquote><em></em>
         <p>Dávejte však pozor – po jednom opomenutí obnovy razítka už nemůžete zastarání zvrátit. Dokumenty stárnou, ale zpětně „omladit“  je už nedokážete. I proto umí DigiSign dokumenty opatřit razítky automaticky (placená funkce).</p>
     
-        <p>Možná už ale máte dokument, který zastaral a napadá vás, jestli je to skutečně neřešitelný problém. Řešení existuje, ale je nejisté a nákladné – budete potřebovat soudního znalce, který posoudí pravost a autenticitu dokumentu a neplatného podpisu nebo pečeti. Přidávání časových razítek může znít jako otravná práce navíc, ale oproti této alternativně to nakonec není tak hrozné.</p>
+        <p>Možná už ale máte dokument, který zastaral a napadá vás, jestli je to skutečně neřešitelný problém. Řešení existuje, ale je nejisté a nákladné – budete potřebovat soudního znalce, který posoudí pravost a autenticitu dokumentu a neplatného podpisu nebo pečeti. Přidávání časových razítek může znít jako otravná práce navíc, ale oproti této alternativě to nakonec není tak hrozné.</p>
     </blockquote>
 
     <h2 id="h21">Dlouhodobá platnost časových razítek</h2>
 
-    <p>Ve skutečnosti však neexistuje <strong>žádná norma ani zákon</strong>, český ani evropský, který by omezoval platnost dokumentů „na pět let“ anebo který by „nzneplatňoval časové razítko s prošlým certifikátem“.</p>
+    <p>Ve skutečnosti však neexistuje <strong>žádná norma ani zákon</strong>, český ani evropský, který by omezoval platnost dokumentů „na pět let“ anebo který by „zneplatňoval časové razítko s prošlým certifikátem“.</p>
     
     <p>Neříká to ani eIDAS, ani normy EU, ani český zákon 297/2016 Sb. <a href="https://www.nacr.cz/verejnost/2-predarchivni-pece/verejnopravni-puvodci/spisova-sluzba-otazky-odpovedi">Oficiální metodický výklad Národního archivu ČR</a>, který je ústřední institucí pro oblast archivnictví a spisové služby, výslovně uvádí, že žádný právní předpis neukládá povinnost „přerazítkovávat“ elektronické dokumenty před vypršením platnosti certifikátu.</p>
     
@@ -46,12 +46,12 @@
     
     <p>Jako hlavní argument pro pravidelné přerazítkování se obvykle uvádí to, že po vypršení TSA certifikátů je obtížné ověřit <strong>správnost času</strong>. Otázka tedy je, zda je časové razítko důvěryhodné i poté, co mu vyprší certifikát?</p>
 
-    <p>Na tento problém bohužel neexistuje zcela jasná a autoritativní odpověď, protože legislativa stanoví pouze obecné podmínky uznatelnosti časových razítek, ale už neříká, jak přesně mají po expiraci TSA certifikátů postupovat validátoři, archivy nebo soudy.  V praxi tak existují různé implementace a výklady. Technický standard <a href="https://www.rfc-editor.org/rfc/rfc3161.html">RFC 3161, článek 4.3</a> doporučuje přerazítkování slovem „SHOULD“ , které má v daném případě skutečně jen význam doporučení a ne povinnosti (na rozdíl od SHALL a MUST, viz <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>). Příznačná je <a href="https://security.stackexchange.com/questions/195813/what-happens-when-the-timestampers-certificate-expires">tato otázka</a> na StackExchange se zcela protichůdnými odpověďmi a zajímavou diskuzí. </p>
+    <p>Na tento problém bohužel neexistuje zcela jasná a autoritativní odpověď, protože legislativa stanoví pouze obecné podmínky uznatelnosti časových razítek, ale už neříká, jak přesně mají po expiraci TSA certifikátů postupovat validátoři, archivy nebo soudy.  V praxi tak existují různé implementace a výklady. Technický standard <a href="https://www.rfc-editor.org/rfc/rfc3161.html">RFC 3161 článek 4.3</a> doporučuje přerazítkování slovem „SHOULD“ , které má v daném případě skutečně jen význam doporučení a ne povinnosti (na rozdíl od SHALL a MUST, viz <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>). Příznačná je <a href="https://security.stackexchange.com/questions/195813/what-happens-when-the-timestampers-certificate-expires">tato otázka</a> na StackExchange se zcela protichůdnými odpověďmi a zajímavou diskuzí. </p>
 
     <p>Pro dlouhodobou ověřitelnost podpisu je zcela zásadní, aby do dokumentu byly vnořeny <strong>validační a odvolací údaje</strong> jak o certifikátu podepisovatele, tak i o certifikátu časového razítka. Úroveň B-LTA toto <strong>vyžaduje</strong>. Dokud jsou použité kryptografické algoritmy považovány za bezpečné, bude podpis důvěryhodný i bez přerazítkování. Riziko, že by útočník zfalšoval čas a způsobil reálnou škodu, je mizivé, jak bylo <a href="https://www.root.cz/clanky/elektronicky-podpis-slabiny-a-moznosti-prerazitkovani/">vysvětleno minule</a>. Nicméně může se stát, že některý software nebo validátor by podpis bez souvislého řetězce razítek neuznal. Neznamená to, že je podpis neplatný, pouze to, že validátor nedokáže bez dalších informací platnost potvrdit.</p>
 
 
-<p>Rozhodnutí o přerazítkování je tedy technickou a organizační volbou, nikoliv legislativní povinností. Můj osobní názor je, že povinnost přerazítkování jenom kvůli expiraci TSA certifikátu by udělala z elektronického podpisu <strong>nepraktickou technologii</strong>. Uvidíme, zda budoucnost tady přinese jasnější standard.</p>
+<p>Rozhodnutí o přerazítkování je tedy technickou a organizační volbou, nikoliv legislativní povinností. Můj osobní názor je, že povinnost přerazítkování jenom kvůli expiraci TSA certifikátu by udělala z elektronického podpisu <strong>nepraktickou technologii</strong>. Uvidíme, zda budoucnost přinese jasnější standard.</p>
 
 
     <h2 id="h22">Datové schránky</h2>
@@ -66,7 +66,7 @@
     
     <p>K čemu je ale dobré takové přerazítkování? Dokud ISDS existuje, stačí ten soubor mít. Až ISDS jednou přestane existovat, pak nebude fungovat ani jejich systém přerazítkování. Smysl by dávalo, kdyby ZFO bylo podepsáno s <strong>dlouhodobou platností</strong> (např. na úrovni B-LTA), ale to zatím nedělají.</p>
     
-    <p>Pokud je pro někoho důležitá <strong>dlouhodobá ověřitelnost</strong> doručenky, je lepší místo pravidelného přerazítkování vytvořit archivní časové razítko úrovně LTA a nechat to tak. To může může technicky vytvořit kdokoli, nejen původní podepisovatel nebo adresát.</p>
+    <p>Pokud je pro někoho důležitá <strong>dlouhodobá ověřitelnost</strong> doručenky, je lepší místo pravidelného přerazítkování vytvořit archivní časové razítko úrovně LTA a nechat to tak. To může technicky vytvořit kdokoli, nejen původní podepisovatel nebo adresát.</p>
     
     <p>Je však dobré poznamenat, že ISDS provozuje Česká pošta, která přímo na svém webu šíří „informaci“ o nutnosti neustálého přerazítkovávání. Takže se nelze divit, že rádi mnohokrát přerazítkují i každou doručenku.</p>
     
