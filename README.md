@@ -54,6 +54,7 @@ https://ec.europa.eu/digital-building-blocks/DSS/webapp-demo/validation
 
 ## Todo
 
+* currently the private key is assumed to be a normal file. Support windows CNG use
 * retrials
 * more cli commands
 * disable copy-pasting or pdf-printing, if required
